@@ -1,3 +1,4 @@
+#-*-  coding:utf-8 -*-
 import requests
 
 class Download(object):
@@ -8,6 +9,7 @@ class Download(object):
         status_code = response.status_code
         
         if status_code == 200:
-            return response.content
+            response.encoding = 'utf-8'
+            return response.text
         else:
             return None

@@ -16,8 +16,11 @@ class SpiderMain(object):
     def crawl(self, root_url):
         content = self.down.download(root_url)
         movie_ids = self.parser.parse_urls(content)
+        count = 0
         
         for mid in movie_ids:
+            if count > 10:
+                break
             movie_link = '''http://service.library.mtime.com/Movie.api?\
             Ajax_CallBack=true\
             &Ajax_CallBackType=Mtime.Library.Services\
@@ -30,6 +33,7 @@ class SpiderMain(object):
             
             res = self.down.download(movie_link.replace(' ', ''))
             self.parser.parser_json(res)
+            count += 1
         
         self.output.store_data(self.parser.items)
         self.output.close_connect()
